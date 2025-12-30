@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Amount - Trust Bank</title>
+
+<style>
+body {
+	font-family: "Segoe UI", sans-serif;
+	background: linear-gradient(135deg, #4facfe, #00f2fe);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.container {
+	background: #fff;
+	padding: 30px 40px;
+	border-radius: 15px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 400px;
+}
+
+.container h2 {
+	text-align: center;
+	margin-bottom: 20px;
+	color: #333;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: bold;
+	color: #444;
+}
+
+input {
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	font-size: 14px;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background: #1976d2;
+	border: none;
+	border-radius: 8px;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+button:hover {
+	background: #0d47a1;
+}
+
+.success, .error {
+	margin-top: 15px;
+	padding: 10px;
+	border-radius: 6px;
+	text-align: center;
+	display: none;
+}
+
+.success {
+	background: #c8e6c9;
+	color: #256029;
+}
+
+.error {
+	background: #ffcdd2;
+	color: #c62828;
+}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<h2>Add Amount</h2>
+		<form id="addAmountForm">
+			<div class="form-group">
+				<label for="name">Full Name</label> <input type="text" id="name"
+					placeholder="Enter full name" required>
+			</div>
+			<div class="form-group">
+				<label for="accountNo">Account Number</label> <input type="text"
+					id="accountNo" placeholder="Enter account number" required>
+			</div>
+			<div class="form-group">
+				<label for="ifsc">IFSC Code</label> <input type="text" id="ifsc"
+					placeholder="Enter IFSC code" required>
+			</div>
+			<div class="form-group">
+				<label for="amount">Amount (₹)</label> <input type="number"
+					id="amount" placeholder="Enter amount" required>
+			</div>
+			<button type="submit">Add Amount</button>
+			<div class="success" id="successMsg">✅ Amount added
+				successfully!</div>
+			<div class="error" id="errorMsg">❌ Error adding amount!</div>
+
+		</form>
+	</div>
+
+	<script>
+    document.getElementById('addAmountForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      fetch('http://localhost:8080/add-balance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          accountNo: document.getElementById('accountNo').value,
+          amount: parseFloat(document.getElementById('amount').value)
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          return response.text().then(text => Promise.reject(text));
+        }
+      })
+      .then(data => {
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('successMsg').textContent = '✅ ' + data;
+        document.getElementById('errorMsg').style.display = 'none';
+        document.getElementById('addAmountForm').reset();
+      })
+      .catch(error => {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('errorMsg').textContent = '❌ ' + error;
+        document.getElementById('successMsg').style.display = 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

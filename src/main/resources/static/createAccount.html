@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create New Account</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	background: linear-gradient(135deg, #4facfe, #00f2fe);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 20px;
+}
+
+.container {
+	background-color: #fff;
+	padding: 30px 40px;
+	border-radius: 15px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 600px;
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 25px;
+	color: #007bff;
+	font-size: 28px;
+}
+
+label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+	color: #333;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="number"],
+	input[type="date"], input[type="tel"], textarea, select {
+	width: 100%;
+	padding: 10px 12px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	font-size: 14px;
+	transition: 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+	border-color: #007bff;
+	outline: none;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+textarea {
+	resize: none;
+}
+
+.radio-group {
+	display: flex;
+	gap: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+}
+
+.radio-group input {
+	margin-right: 5px;
+}
+
+.phone-group {
+	display: flex;
+	gap: 5px;
+	margin-bottom: 15px;
+	align-items: center;
+}
+
+.phone-group input[type="text"] {
+	width: 50px;
+	background: #f0f0f0;
+	border: 1px solid #ccc;
+	text-align: center;
+	pointer-events: none;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #007bff;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+@media ( max-width : 500px) {
+	.radio-group, .phone-group {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<h2>📝 Create New Account</h2>
+
+		<form id="new-account">
+			<label for="username">Username</label> <input id="username"
+				name="username" type="text" placeholder="Enter username" required>
+
+			<label for="password">Password</label> <input id="password"
+				name="password" type="password" placeholder="Enter password"
+				required> <label for="firstName">First Name</label> <input
+				type="text" id="firstName" name="firstName"
+				placeholder="Enter first name" required> <label
+				for="lastName">Last Name</label> <input type="text" id="lastName"
+				name="lastName" placeholder="Enter last name" required> <label
+				for="dateOfBirth">Date of Birth</label> <input type="date"
+				id="dateOfBirth" name="dateOfBirth" required> <label>Gender</label>
+			<div class="radio-group">
+				<input type="radio" id="male" name="gender" value="Male" required>
+				<label for="male">Male</label> <input type="radio" id="female"
+					name="gender" value="Female"> <label for="female">Female</label>
+				<input type="radio" id="other" name="gender" value="Other">
+				<label for="other">Other</label>
+			</div>
+
+			 <label for="aadharCard">Aadhar Card No</label>
+             <input type="text" id="aadharCard" name="aadharCard" placeholder="xxxx xxxx xxxx" autocomplete="off" inputmode="numeric" required maxlength="14">
+     
+				
+				<label for="panNo">PAN No</label> <input
+				type="text" id="panNo" name="panNo" placeholder="Enter PAN Number" required> 
+				
+				<label for="address">Address</label>
+			    <textarea id="address" name="address" rows="3" placeholder="Enter address" required></textarea>
+
+			<label for="email">Email</label> <input type="email" id="email"
+				name="email" placeholder="Enter email" required> <label
+				for="phoneNumber">Phone Number</label>
+			<div class="phone-group">
+				<input type="text" value="+91" readonly> <input type="tel"
+					id="phoneNumber" name="phoneNumber"
+					placeholder="Enter 10-digit number" pattern="[0-9]{10}"
+					maxlength="10" required>
+			</div>
+
+			<label>Account Type</label>
+			<div class="radio-group">
+				<input type="radio" id="saving" name="accountType" value="Savings"
+					required> <label for="saving">Savings</label> <input
+					type="radio" id="current" name="accountType" value="Current">
+				<label for="current">Current</label>
+			</div>
+
+			<label for="balance">Opening Balance</label> <input type="number"
+				id="balance" name="balance" placeholder="Enter initial balance"
+				required>
+
+			<button type="submit">Create New Account</button>
+		</form>
+	</div>
+
+</body>
+
+<script>
+document.getElementById("new-account").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+  
+    const payload = {
+        username: document.getElementById("username").value.trim(),
+        password: document.getElementById("password").value.trim(),
+        firstname: document.getElementById("firstName").value.trim(),
+        lastname: document.getElementById("lastName").value.trim(),
+        dateOfBirth: document.getElementById("dateOfBirth").value.trim(),
+        gender: document.querySelector('input[name="gender"]:checked')?.value || "",
+        aadharCard: document.getElementById("aadharCard").value.trim(),
+        panNo: document.getElementById("panNo").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phoneNumber: document.getElementById("phoneNumber").value.trim(),
+        accountType: document.querySelector('input[name="accountType"]:checked')?.value || "",
+        balance: document.getElementById("balance").value.trim(),
+      
+    };
+
+    try {
+        const response = await fetch("http://localhost:8080/save-user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            alert("Server error! Please try again.");
+            return;
+        }
+
+        const result = await response.json();
+
+        if (result.userId) {
+            alert("Account created successfully!");
+            window.location.href = `admindashbord.html?userId=${result.userId}`;
+        } else {
+            alert(result.message || "Something went wrong!");
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Error connecting to server. Please try again later.");
+    }
+});
+</script>
+</html>

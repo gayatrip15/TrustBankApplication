@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trust Bank</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+}
+
+nav {
+	background: #003366; /* Dark blue bank theme */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 40px;
+	color: #fff;
+}
+
+nav .logo {
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
+nav ul {
+	list-style: none;
+	display: flex;
+	gap: 25px;
+}
+
+nav ul li a {
+	text-decoration: none;
+	color: white;
+	font-size: 16px;
+	transition: color 0.3s;
+}
+
+nav ul li a:hover {
+	color: #ffd700;
+}
+
+body {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.welcome {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(0, 0, 0, 0.4);
+	color: white;
+	font-size: 36px;
+	font-weight: bold;
+	text-align: center;
+}
+</style>
+</head>
+<body>
+
+	<nav>
+		<div class="logo">Trust Bank</div>
+		<ul>
+			<li><a href="userlogin.html">Login</a></li>
+			<li><a href="admin.html">Admin</a></li>
+			<li><a href="about.html">About</a></li>
+		</ul>
+	</nav>
+
+
+	<div class="welcome">Welcome to the Trust Bank</div>
+
+
+</body>
+</html>

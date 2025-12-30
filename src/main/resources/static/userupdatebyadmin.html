@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update Account - TrustBank</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	background: linear-gradient(135deg, #4facfe, #00f2fe);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 20px;
+}
+
+.update-container {
+	background: #ffffff;
+	padding: 40px 35px;
+	border-radius: 15px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 600px;
+	text-align: center;
+}
+
+.update-container h2 {
+	margin-bottom: 30px;
+	color: #007bff;
+	font-size: 28px;
+}
+
+label {
+	display: block;
+	text-align: left;
+	margin-bottom: 6px;
+	font-weight: 600;
+	color: #333;
+}
+
+input, textarea {
+	width: 100%;
+	padding: 12px 10px;
+	margin-bottom: 20px;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	font-size: 15px;
+	transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+	border-color: #007bff;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+	outline: none;
+}
+
+.phone-container {
+	display: flex;
+	gap: 5px;
+	margin-bottom: 20px;
+}
+
+.phone-container input[readonly] {
+	width: 50px;
+	text-align: center;
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+}
+
+.phone-container input[type="tel"] {
+	flex: 1;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background: #007bff;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+button:hover {
+	background: #0056b3;
+}
+
+@media ( max-width : 480px) {
+	.update-container {
+		width: 90%;
+		padding: 25px;
+	}
+}
+</style>
+</head>
+<body>
+
+	<div class="update-container">
+		<h2>🔧 Update Account</h2>
+		<form id="update-form">
+			<label for="firstName">First Name</label> <input type="text"
+				id="firstName" name="firstName" required> <label
+				for="lastName">Last Name</label> <input type="text" id="lastName"
+				name="lastName" required> <label for="dateOfBirth">Date
+				of Birth</label> <input type="date" id="dateOfBirth" name="dateOfBirth"
+				required> <label for="aadharCard">Aadhar Card No</label> <input
+				type="text" id="aadharCard" name="aadharCard" required> <label
+				for="panNo">PAN No</label> <input type="text" id="panNo"
+				name="panNo" required> <label for="address">Address</label>
+			<textarea id="address" name="address" rows="3" required></textarea>
+
+			<label for="email">Email</label> <input type="email" id="email"
+				name="email" required> <label for="phoneNumber">Phone
+				Number</label>
+			<div class="phone-container">
+				<input type="text" value="+91" readonly> <input type="tel"
+					id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}"
+					maxlength="10" required>
+			</div>
+
+			<button type="submit">Update Account</button>
+		</form>
+	</div>
+
+	<script>
+
+const params = new URLSearchParams(window.location.search);
+const userId = params.get("userId");
+
+
+async function loadUserData() {
+    if (!userId) return;
+    try {
+        const response = await fetch(`http://localhost:8080/get-user/${userId}`);
+        const user = await response.json();
+        document.getElementById("firstName").value = user.firstname || "";
+        document.getElementById("lastName").value = user.lastname || "";
+        document.getElementById("dateOfBirth").value = user.dateOfBirth || "";
+        document.getElementById("aadharCard").value = user.aadharCard || "";
+        document.getElementById("panNo").value = user.panNo || "";
+        document.getElementById("address").value = user.address || "";
+        document.getElementById("email").value = user.email || "";
+        document.getElementById("phoneNumber").value = user.phoneNumber || "";
+    } catch (err) {
+        console.error(err);
+        alert("Failed to load user data.");
+    }
+}
+
+
+document.getElementById("update-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    try {
+        const response = await fetch(`http://localhost:8080/update/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                firstname: document.getElementById("firstName").value.trim(),
+                lastname: document.getElementById("lastName").value.trim(),
+                dateOfBirth: document.getElementById("dateOfBirth").value,
+                aadharCard: document.getElementById("aadharCard").value.trim(),
+                panNo: document.getElementById("panNo").value.trim(),
+                address: document.getElementById("address").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                phoneNumber: document.getElementById("phoneNumber").value.trim()
+            })
+        });
+        if (!response.ok) { alert("Failed to update user."); return; }
+        alert("User updated successfully!");
+        window.location.href = "admindashbord.html";
+    } catch (err) {
+        console.error(err);
+        alert("Error connecting to server.");
+    }
+});
+
+window.onload = loadUserData;
+</script>
+
+</body>
+</html>

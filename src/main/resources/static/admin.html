@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	background: linear-gradient(135deg, #4facfe, #00f2fe);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	padding: 20px;
+	position: relative;
+}
+
+.top-left {
+	position: absolute;
+	top: 20px;
+	left: 25px;
+}
+
+.top-left a {
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 18px;
+	transition: 0.3s;
+}
+
+.top-left a:hover {
+	text-decoration: underline;
+}
+
+.login-container {
+	background: #fff;
+	padding: 40px 35px;
+	border-radius: 15px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 360px;
+	text-align: center;
+}
+
+.login-container h2 {
+	margin-bottom: 30px;
+	color: #007bff;
+	font-size: 28px;
+}
+
+label {
+	display: block;
+	text-align: left;
+	margin-bottom: 6px;
+	font-weight: 600;
+	color: #333;
+}
+
+input {
+	width: 100%;
+	padding: 12px 10px;
+	margin-bottom: 20px;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	font-size: 15px;
+	transition: all 0.3s ease;
+}
+
+input:focus {
+	border-color: #007bff;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+	outline: none;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background: #007bff;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+button:hover {
+	background: #0056b3;
+}
+
+p {
+	text-align: center;
+	margin-top: 15px;
+	font-size: 14px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.login-container input::placeholder {
+	color: #999;
+}
+</style>
+</head>
+<body>
+
+
+	<div class="top-left">
+		<a href="index.html">⬅ Back</a>
+	</div>
+
+
+	<div class="login-container">
+		<h2>🔒 Admin Login</h2>
+		<form id="loginForm">
+			<label for="formUserName">Admin Username</label> <input type="text"
+				id="formUserName" placeholder="Enter admin username" required>
+
+			<label for="formpassword">Password</label> <input type="password"
+				id="formpassword" placeholder="Enter password" required>
+
+			<button type="submit">Login</button>
+
+			<!-- <p><a href="#">Forgot Password?</a></p> -->
+		</form>
+	</div>
+
+	<script>
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const admin = document.getElementById("formUserName").value.trim();
+    const password = document.getElementById("formpassword").value.trim();
+
+    try {
+        const response = await fetch("http://localhost:8080/adminlogin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ adminUserName: admin, adminPassword: password }),
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            alert("Server error! Please try again later.");
+            return;
+        }
+
+        const result = await response.json();
+
+        if (result.id) {
+            window.location.href = "/admindashbord.html";
+        } else {
+            alert(result.message || "Invalid username or password!");
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Invalid password. Please try again.");
+    }
+});
+</script>
+
+</body>
+</html>
